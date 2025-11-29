@@ -4,14 +4,14 @@
 #include <vector>
 using namespace std;
 
-priority_queue < pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;//거리 출발지 (중요!!)
+priority_queue < pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;//거리, 출발지(중요!!!)
 vector<pair<int, int>> slot[20001]; //목적지, 거리
 int dis[20001];
 int v, e, start;
 
 void Check()
 {
-	pq.push({ 0 , start});
+	pq.push({ 0 , start });
 	dis[start] = 0;
 
 	while (!pq.empty())
@@ -24,7 +24,7 @@ void Check()
 			if (dis[nxt.first] != -1 && dis[nxt.first] <= dis[before.second] + nxt.second)
 				continue;
 			dis[nxt.first] = dis[before.second] + nxt.second;
-			pq.push({dis[nxt.first], nxt.first});
+			pq.push({ dis[nxt.first], nxt.first });
 		}
 	}
 }
