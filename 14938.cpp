@@ -1,20 +1,47 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
 #include <queue>
+#define INF 1e9
 using namespace std;
+
 int n, m, r;
-int node[102];
-int path[102][102] = { 0, };
-queue<int> Q;
-pair<int, int> dis[101][101];
+int node[101];
+vector<pair<int, int>> line[101]; //목적지, 거리
+priority_queue<pair<int, int>> Q; //거리, 스팟
+int dis[101];
+int max_cnt = 0;
+
+void Check(int item)
+{
+	int tmp_cnt = node[item];
+	fill(dis, dis + 101, -1);
+
+	Q.push({ 0,item });
+	dis[item] = 0;
+
+	while (!Q.empty())
+	{
+		auto before = Q.top();
+		Q.pop();
+
+		for (auto after : line[before.second])
+		{
+			if ((dis[after.first] < dis[before.second] + after.second && dis[after.first] != -1) || dis[before.second] + after.second > m)
+				continue;
+			if (dis[after.first] == -1)
+				tmp_cnt += node[after.first];
+			dis[after.first] = dis[before.second] + after.second;
+			Q.push({ dis[after.first], after.first });
+		}
+	}
+	max_cnt = max(tmp_cnt, max_cnt);
+}
 
 int main()
 {
-	for (int i = 0; i < 101; i++)
-		for (int j = 0; j < 101; j++)
-			Q[i][j] = make_pair(-1, -1);
-
 	cin >> n >> m >> r;
+
 	for (int i = 1; i <= n; i++)
 		cin >> node[i];
 
@@ -22,30 +49,12 @@ int main()
 	{
 		int a, b, c;
 		cin >> a >> b >> c;
-		path[a][b] = c;
-		paht[b][a] = c;
+		line[a].push_back({ b,c });
+		line[b].push_back({ a,c });
 	}
 
 	for (int i = 1; i <= n; i++)
-	{
+		Check(i);
 
-		Q.push(1);
-
-		while (!Q.empty())
-		{
-			int before = Q.front();
-			Q.pop();
-
-			for (int j = 1; j <= n; j++)
-			{
-				if (path == 0)
-					continue;
-				int d = dis[i][before].first + path[before][j];
-				if (d > m)
-					continue;
-				int am = dis[i][before].second + node[j];
-				if(am < )
-			}
-		}
-	}
+	cout << max_cnt;
 }
