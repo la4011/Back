@@ -8,7 +8,7 @@ using namespace std;
 int n, m, r;
 int node[101];
 vector<pair<int, int>> line[101]; //목적지, 거리
-priority_queue<pair<int, int>> Q; //거리, 스팟
+priority_queue<pair<int, int>, vector<pair<int,int>>, greater<pair<int,int>>> Q; //거리, 스팟
 int dis[101];
 int max_cnt = 0;
 
