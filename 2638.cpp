@@ -15,15 +15,18 @@ queue<pair<int, int>> airQ;
 
 void aircheck()
 {
-	fill(air[0], air[0] + (101 * 101), 0);
-	airQ.push({ 0,0 });
-	air[0][0] = 1;
+	if(air[0][0] == 0)
+	{
+		airQ.push({ 0,0 });
+		air[0][0] = 1;
+	}
 
 	while (!airQ.empty())
 	{
 		auto before = airQ.front();
 		int bx = before.second;
 		int by = before.first;
+		air[before.first][before.second] = 1;
 		airQ.pop();
 
 		for (int i = 0; i < 4; i++)
@@ -58,8 +61,10 @@ void cheesecheck()
 		}
 		if (cnt >= 2)
 		{
-			cheese.erase(cheese.begin() + i);
+			cheese[i] = cheese.back();
+			cheese.pop_back();
 			slot[here.first][here.second] = 0;
+			airQ.push(here);
 		}
 	}
 }
@@ -68,6 +73,7 @@ int main()
 {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
+	fill(air[0], air[0] + (101 * 101), 0);
 
 	cin >> n >> m;
 	for (int i = 0; i < n; i++)
