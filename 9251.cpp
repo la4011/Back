@@ -1,39 +1,40 @@
 #include <iostream>
+#include <string>
+#include <vector>
 #include <algorithm>
-#include <queue>
-#include <tuple>
 using namespace std;
-int a, b;
-queue<pair<int,int>> Q;
-int sol = -2;
+
+int LCS[1001][1001];
 
 int main()
 {
-	cin >> a >> b;
-	Q.push({b, 0});
+	string s;
+	char s1[1001], s2[1002];
+	cin >> s;
+	for (int i = 1; i <= s.size(); i++)
+		s1[i] = s[i - 1];
+	int size1 = s.size();
+	cin >> s;
+	for (int i = 1; i <= s.size(); i++)
+		s2[i] = s[i - 1];
+	int size2 = s.size();
 
-	while (!Q.empty())
+	for (int i = 0; i <= size1; i++)
 	{
-		int num, time;
-		tie(num, time) = Q.front();
-		if (num == a)
+		for (int j = 0; j <= size2; j++)
 		{
-			sol = time;
-			break;
-		}
-		Q.pop();
-
-		for (int i = 0; i < 2; i++)
-		{
-			if (!i)
-				if (num % 2 == 0)
-					Q.push({ num / 2, time + 1 });
-
-			if (i)
-				if (num % 10 == 1 && num > 10)
-					Q.push({ num / 10, time + 1 });
+			if (i == 0 || j == 0)
+				LCS[i][j] = 0;
+			else if (s1[i] == s2[j])
+				LCS[i][j] = LCS[i - 1][j - 1] + 1;
+			else
+				LCS[i][j] = max(LCS[i - 1][j], LCS[i][j - 1]);
 		}
 	}
 
-	cout << sol+1;
+	int sol = 0;
+	for (int i = 0; i <= size2; i++)
+		sol = max(sol, LCS[size1][i]);
+
+	cout << sol;
 }

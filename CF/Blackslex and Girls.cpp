@@ -23,6 +23,8 @@ int main()
 		vector<int> num(n);
 		long long need_x = 0;
 		long long need_y = 0;
+		bool aflag = 0;
+		bool bflag = 0;
 		for (int i = 0; i < n; i++)
 		{
 			cin >> num[i];
@@ -34,11 +36,15 @@ int main()
 			{
 				a = (k - 1) / 2;
 				b = (k - a);
+				bflag = 1;
+				a = 0;
 			}
 			else if (!arr[i])
 			{
 				b = (k - 1) / 2;
 				a = (k - b);
+				aflag = 1;
+				b = 0;
 			}
 			need_x += a;
 			need_y += b;
@@ -50,25 +56,18 @@ int main()
 			continue;
 		}
 
-		long long remain_x = x - need_x;
-		long long remain_y = y - need_y;
-
-		bool flag = 0;
-		for(int i = 1; i < n; i++)
-			if (arr[i - 1] != arr[i])
-			{
-				flag = 1;
-				continue;
-			}
-
-		if (flag == 0)
-		{
-			if ((arr[0] == 1 && remain_x > remain_y) || (arr[0] == 0 && remain_x < remain_y))
+		if(!bflag)
+			if (y > x - n)
 			{
 				cout << "NO" << '\n';
 				continue;
 			}
-		}
+		if(!aflag)
+			if (x > y - n)
+			{
+				cout << "NO" << '\n';
+				continue;
+			}
 
 		cout << "YES" << '\n';
 
